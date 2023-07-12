@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/</loc>
-    <lastmod>2023-07-11T00:00:00+00:00</lastmod>
+    <loc>https://m0hs1ne.github.io/</loc>
+    <priority>0</priority>
   </url><url>
-    <loc>/</loc>
+    <loc>https://m0hs1ne.github.io/categories/</loc>
   </url><url>
-    <loc>/categories/</loc>
+    <loc>https://m0hs1ne.github.io/</loc>
   </url><url>
-    <loc>/tags/</loc>
+    <loc>https://m0hs1ne.github.io/tags/</loc>
   </url>
 </urlset>
