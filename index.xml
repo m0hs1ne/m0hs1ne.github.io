@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <link>/</link>
+    <description>Recent content on </description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>whoami</title>
+      <link>/</link>
+      <pubDate>Tue, 11 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/</guid>
+      <description>Hi there My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.
+We all know how hard it is to start in this field, so I hope this blog will help you to get started.
+About this blog This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.</description>
+      <content>&lt;h1 id=&#34;hi-there&#34;&gt;Hi there&lt;/h1&gt;
+&lt;p&gt;My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.&lt;/p&gt;
+&lt;p&gt;We all know how hard it is to start in this field, so I hope this blog will help you to get started.&lt;/p&gt;
+&lt;h2 id=&#34;about-this-blog&#34;&gt;About this blog&lt;/h2&gt;
+&lt;p&gt;This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.&lt;/p&gt;
+&lt;p&gt;you can find me :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://tryhackme.com/p/m0hs1ne&#34;&gt;TryHackMe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.linkedin.com/in/mohsine-el-hadaoui-92937222b/&#34;&gt;Linkedin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.github.com/m0hs1ne&#34;&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, there you have it&amp;hellip; enjoy!&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>
