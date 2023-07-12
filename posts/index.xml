@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>chaos</title>
-    <link>https://m0hs1ne.github.io/</link>
-    <description>Recent content on chaos</description>
+    <title>Posts on chaos</title>
+    <link>https://m0hs1ne.github.io/posts/</link>
+    <description>Recent content in Posts on chaos</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://m0hs1ne.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://m0hs1ne.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HackTheBoo web challenges</title>
       <link>https://m0hs1ne.github.io/posts/hacktheboo/</link>
@@ -174,30 +174,6 @@ Since the case secrets is the first item, it can bypass the &lt;code&gt;REMOTE_A
 &lt;p&gt;The Flag:&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTB{t3mpl4t3_1nj3ct10n_1s_$p00ky!!}
 &lt;/code&gt;&lt;/pre&gt;</content>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://m0hs1ne.github.io/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://m0hs1ne.github.io/about/</guid>
-      <description>Hi there My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.
-We all know how hard it is to start in this field, so I hope this blog will help you to get started.
-About this blog This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.</description>
-      <content>&lt;h1 id=&#34;hi-there&#34;&gt;Hi there&lt;/h1&gt;
-&lt;p&gt;My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.&lt;/p&gt;
-&lt;p&gt;We all know how hard it is to start in this field, so I hope this blog will help you to get started.&lt;/p&gt;
-&lt;h2 id=&#34;about-this-blog&#34;&gt;About this blog&lt;/h2&gt;
-&lt;p&gt;This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.&lt;/p&gt;
-&lt;p&gt;you can find me :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://tryhackme.com/p/m0hs1ne&#34;&gt;TryHackMe&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.linkedin.com/in/mohsine-el-hadaoui-92937222b/&#34;&gt;Linkedin&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.github.com/m0hs1ne&#34;&gt;Github&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;So, there you have it&amp;hellip; enjoy!&lt;/p&gt;
-</content>
     </item>
     
   </channel>
