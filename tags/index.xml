@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on chaos</title>
-    <link>https://m0hs1ne.github.io/tags/</link>
+    <link>https://mychaos.me/tags/</link>
     <description>Recent content in Tags on chaos</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://m0hs1ne.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mychaos.me/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HackTheBox</title>
-      <link>https://m0hs1ne.github.io/tags/hackthebox/</link>
+      <link>https://mychaos.me/tags/hackthebox/</link>
       <pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://m0hs1ne.github.io/tags/hackthebox/</guid>
+      <guid>https://mychaos.me/tags/hackthebox/</guid>
       <description></description>
       <content></content>
     </item>
     
     <item>
       <title>Web</title>
-      <link>https://m0hs1ne.github.io/tags/web/</link>
+      <link>https://mychaos.me/tags/web/</link>
       <pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://m0hs1ne.github.io/tags/web/</guid>
+      <guid>https://mychaos.me/tags/web/</guid>
       <description></description>
       <content></content>
     </item>
