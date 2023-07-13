@@ -308,14 +308,12 @@ Since the case secrets is the first item, it can bypass the &lt;code&gt;REMOTE_A
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://mychaos.me/about/</guid>
-      <description>Hi there My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.
-We all know how hard it is to start in this field, so I hope this blog will help you to get started.
-About this blog This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.</description>
+      <description>Hi there My name is Mohsine El Hadaoui and I&amp;rsquo;m a cybersecurity enthusiast. I&amp;rsquo;m from Morocco, living in Sidi Bennour and currently studying at 1337.
+What is this blog about? I will be posting about my journey in cybersecurity, I will be posting about my experience in CTFs, HackTheBox, TryHackMe, and other platforms. I will also be posting about my experience in the field of cybersecurity, and how I&amp;rsquo;m learning new things every day.</description>
       <content>&lt;h1 id=&#34;hi-there&#34;&gt;Hi there&lt;/h1&gt;
-&lt;p&gt;My name is Mohsine El Hadaoui and I&amp;rsquo;m the author of this Blog. I made it to share my journey in cybersecurity realm.&lt;/p&gt;
-&lt;p&gt;We all know how hard it is to start in this field, so I hope this blog will help you to get started.&lt;/p&gt;
-&lt;h2 id=&#34;about-this-blog&#34;&gt;About this blog&lt;/h2&gt;
-&lt;p&gt;This blog is for anyone who wants to learn about cybersecurity. I will share my experience and my journey in this field.&lt;/p&gt;
+&lt;p&gt;My name is Mohsine El Hadaoui and I&amp;rsquo;m a cybersecurity enthusiast. I&amp;rsquo;m from Morocco, living in Sidi Bennour and currently studying at &lt;a href=&#34;https://1337.ma/&#34;&gt;1337&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;what-is-this-blog-about&#34;&gt;What is this blog about?&lt;/h1&gt;
+&lt;p&gt;I will be posting about my journey in cybersecurity, I will be posting about my experience in CTFs, HackTheBox, TryHackMe, and other platforms. I will also be posting about my experience in the field of cybersecurity, and how I&amp;rsquo;m learning new things every day.&lt;/p&gt;
 &lt;p&gt;you can find me :&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://tryhackme.com/p/m0hs1ne&#34;&gt;TryHackMe&lt;/a&gt;&lt;/li&gt;
