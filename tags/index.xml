@@ -6,7 +6,27 @@
     <description>Recent content in Tags on chaos</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mychaos.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Jul 2023 20:28:56 +0100</lastBuildDate><atom:link href="https://mychaos.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe</title>
+      <link>https://mychaos.me/tags/tryhackme/</link>
+      <pubDate>Wed, 12 Jul 2023 20:28:56 +0100</pubDate>
+      
+      <guid>https://mychaos.me/tags/tryhackme/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>wordpress</title>
+      <link>https://mychaos.me/tags/wordpress/</link>
+      <pubDate>Wed, 12 Jul 2023 20:28:56 +0100</pubDate>
+      
+      <guid>https://mychaos.me/tags/wordpress/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
     <item>
       <title>HackTheBox</title>
       <link>https://mychaos.me/tags/hackthebox/</link>
