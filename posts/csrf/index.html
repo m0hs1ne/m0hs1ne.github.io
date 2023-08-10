@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>CSRF :: chaos</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSRF is an attack that tricks the victim into submitting a malicious request." />
+<meta name="keywords" content="CSRF, OWASP, Web Security" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://mychaos.me/posts/csrf/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://mychaos.me/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://mychaos.me/favicon.ico">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="CSRF">
+<meta property="og:description" content="CSRF is an attack that tricks the victim into submitting a malicious request." />
+<meta property="og:url" content="https://mychaos.me/posts/csrf/" />
+<meta property="og:site_name" content="chaos" />
+
+  
+    <meta property="og:image" content="https://mychaos.me/favicon.ico">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-08-10 12:29:44 &#43;0100 &#43;01" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="blue">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    [m0hs1ne@r00t:~]#
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">/about</a></li>
+        
+      
+        
+          <li><a href="/posts">/posts</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >/about</a></li>
+        
+      
+        
+          <li><a href="/posts" >/posts</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://mychaos.me/posts/csrf/">CSRF</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-08-10</time><span class="post-author">m0hs1ne</span><span class="post-reading-time">9 min read (1867 words)</span></div>
+
+  
+    <span class="post-tags">
+      
+      #<a href="https://mychaos.me/tags/csrf/">CSRF</a>&nbsp;
+      
+      #<a href="https://mychaos.me/tags/owasp/">OWASP</a>&nbsp;
+      
+      #<a href="https://mychaos.me/tags/web-security/">Web Security</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <blockquote>
+<p>CSRF is an attack that tricks the victim into submitting a malicious request.</p>
+</blockquote>
+<h3 id="what-is-cross-site-request-forgery-csrf">What is Cross-Site Request Forgery (CSRF)?<a href="#what-is-cross-site-request-forgery-csrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Cross-Site Request Forgery (CSRF) is an attack that tricks users of a web application into unknowingly performing unwanted actions while they are authenticated. This type of attack targets requests that change the application&rsquo;s state, rather than stealing data. Because the attacker cannot see the response to the forged request, they rely on social engineering techniques, such as sending malicious links via email or chat, to deceive users into executing actions of the attacker&rsquo;s choosing.</p>
+<div align="center">
+    <img src="https://i.ibb.co/C9xLpKY/pinterestdownloader-com-1691670824-925069.jpg" alt="Image" width="600" />
+  </div>
+  
+<h3 id="impact-of-csrf-attacks">Impact of CSRF attacks:<a href="#impact-of-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>If the victim is a regular user, a successful CSRF attack can lead to state-changing requests being performed without their consent. This can include actions like transferring funds, changing their email address, or giving an attacker access to their data. On the other hand, if the victim has an administrative account, a CSRF attack can compromise the entire web application.</p>
+<h3 id="understanding-csrf-attacks">Understanding CSRF Attacks<a href="#understanding-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Cross-Site Request Forgery (CSRF) attacks allow attackers to bypass authentication processes or perform actions with elevated privileges. To execute this type of attack, the attacker must:</p>
+<ol>
+<li>Create a custom payload.</li>
+<li>Embed the request into a hyperlink.</li>
+<li>Trick the victim into clicking the link, which sends the request to the website.</li>
+<li>Forge the request to conduct malicious actions.</li>
+</ol>
+<p>CSRF attacks only work if the victim is an authenticated user. This is because, when the request is made, the application checks if valid session cookies are available. If relevant cookies are available and sent with the request, and the website approves them, the CSRF attack will be successful.</p>
+<h3 id="csrf-attack-example">CSRF Attack Example<a href="#csrf-attack-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let&rsquo;s say that a user is logged into their bank account and wants to transfer money to another account. The user&rsquo;s bank uses a GET request to transfer funds, which is vulnerable to CSRF attacks. The attacker creates a malicious link like this:</p>
+<p><code>https://bank.com/transfer?to=attacker&amp;amount=1000</code></p>
+<p>when clicked, transfers money from the victim&rsquo;s account to the attacker&rsquo;s account. The attacker then sends the link to the victim via email or chat. If the victim clicks the link, the request is sent to the bank&rsquo;s website, which approves the request because the victim is already authenticated. The attacker receives the money, and the victim is none the wiser.
+If the attacker is sending the payload with a POST request, a payload similar to the following HTML code can be used:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://bank.co m/transfer&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Transaction&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;withdraw&#34;</span> /&gt;
+&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Amount&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3000000&#34;</span> /&gt;
+&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Click&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>When using the &ldquo;bank.com/transfer&rdquo; endpoint to perform a transfer action, the &ldquo;Transaction&rdquo; and &ldquo;Amount&rdquo; parameters are passed via a POST request. Since this endpoint doesn&rsquo;t require a random CSRF token, an attacker can put HTML code on &ldquo;attacker.com,&rdquo; send the link to the victim, and initiate a transfer once the victim opens the link. This attack is possible due to the lack of mandatory CSRF token.</p>
+<h3 id="what-is-csrf-token">what is CSRF token?<a href="#what-is-csrf-token" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>A CSRF token is a unique, secret, unpredictable value that is generated by the server-side application and transmitted to the client in such a way that it is included in a subsequent HTTP request made by the client. When the later request is made, the server-side application validates that the request includes the expected token and rejects the request if the token is missing or invalid.</p>
+<h3 id="is-csrf-simple-as-it-looks">is CSRF simple as it looks?<a href="#is-csrf-simple-as-it-looks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When the victim opens the link, the transfer occurs. Right?</p>
+<p>Well, it&rsquo;s not that simple.</p>
+<p>There are various scenarios to consider. For instance, if the victim is using Chrome browser, it won&rsquo;t work. However, if they are using Safari, it would work. So, can we conclude that CSRF doesn&rsquo;t occur in Chrome anymore? No. It depends on whether the victim logged in to <code>bank.com</code> within the last two minutes. If they did, the transfer will work. If more than two minutes have passed, it won&rsquo;t.</p>
+<p>Furthermore, whether the &ldquo;bank.com/transfer&rdquo; endpoint accepts the content-type as &ldquo;text/html&rdquo; determines whether it will work or not. If it only accepts &ldquo;application/json,&rdquo; it won&rsquo;t work.</p>
+<div align="center">
+    <img src="https://i.pinimg.com/originals/f1/60/94/f160944c79c3d9ea8acc36f007f45c6b.jpg" alt="Image" width="350" />
+  </div>
+  
+<p>I understand that it may be confusing. To understand these scenarios, we must first grasp two concepts: SameSite Cookies and Same Origin Policy. Let&rsquo;s break it down step by step.</p>
+<h3 id="samesite-cookies">SameSite Cookies<a href="#samesite-cookies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>SameSite is a cookie attribute, similar to HttpOnly and Secure. Its purpose is to address the main vulnerability exploited by CSRF attacks. By default, when you send a request from a.com to b.com, the browser includes your cookies for b.com in the request. As a result, when the attacker&rsquo;s code on evil.com sends a money transfer request to bank.com, the browser sends an authenticated request to bank.com, leading to the successful transfer.</p>
+<p>If the browser fails to add the cookie to the request, it poses a problem. Let&rsquo;s consider a scenario where a victim logs in to bank.com, then visits evil.com. Inside evil.com, a transfer request is sent to bank.com. However, because the browser doesn&rsquo;t include cookies, the request lacks the necessary authentication, resulting in the transfer not taking place.</p>
+<p>To address this issue, a concept called &ldquo;SameSite&rdquo; has been introduced. The SameSite cookie attribute offers three possible values:</p>
+<p>Lax: Cookies are not sent with normal cross-site requests, unless the user is navigating to the original site (e.g., by following a link).</p>
+<p>Strict: Cookies are only sent in a first-party context and are not included in requests initiated by third-party websites.</p>
+<p>None: Cookies are sent in all contexts, regardless of whether the request is cross-site or first-party.</p>
+<p>Developers have the option to set Lax or Strict flags as protection against CSRF attacks. However, what happens if they neglect to do so? Let&rsquo;s refer back to our previous example:</p>
+<p><code>&quot;if the victim is using Chrome browser, it won't work. However, if they are using Safari, it would work.&quot;</code></p>
+<p>The reason behind this is that the Chrome browser automatically applies a default SameSite value (Lax) to cookies. As a result, even if the developer is unaware of CSRF or SameSite cookies, their websites are still safeguarded, and CSRF attacks are prevented. Let&rsquo;s put this to the test.</p>
+<p>Using the Chrome browser, navigate to <a href="https://authenticationtest.com/simpleFormAuth/">https://authenticationtest.com/simpleFormAuth/</a> and complete the form by entering the provided username and password values.</p>
+<p>Once logged in, the application will generate a session cookie. You can verify its presence in Chrome&rsquo;s developer console. Notably, the cookie does not contain a SameSite attribute.</p>
+<div align="center">
+    <img src="https://i.ibb.co/XJq6y30/image-2023-08-10-154220483.png" alt="Image" width="1000" />
+  </div>
+  
+<p>There is a form that we can test at <a href="https://authenticationtest.com/xssDemo/">https://authenticationtest.com/xssDemo/</a> .
+Just fill the textbox and click the “Search” button.
+It generates a POST request and the request doesn’t contain a random CSRF-token. So in theory, we can conduct a CSRF attack there.</p>
+<p>Save the following HTML snippet as csrf.html and open it in the same Chrome browser that you logged in.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
+ &lt;<span style="color:#f92672">body</span>&gt;
+ &lt;<span style="color:#f92672">script</span>&gt;<span style="color:#a6e22e">history</span>.<span style="color:#a6e22e">pushState</span>(<span style="color:#960050;background-color:#1e0010">‘’</span>, <span style="color:#960050;background-color:#1e0010">‘’</span>, <span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">’</span>)&lt;/<span style="color:#f92672">script</span>&gt;
+ &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">”https://authenticationtest.com/xssDemo/&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">”POST”</span>&gt;
+ &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”hidden”</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">”search”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”requestTest”</span> /&gt;
+ &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”submit”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”Submit</span> <span style="color:#a6e22e">request</span><span style="color:#960050;background-color:#1e0010">”</span> /&gt;
+ &lt;/<span style="color:#f92672">form</span>&gt;
+ &lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>Open Chrome&rsquo;s developer console and go to the &ldquo;Network&rdquo; section. Then, click the &ldquo;Submit Request&rdquo; button. what happened? the POST request sent with our authentication cookie.</p>
+<div align="center">
+    <img src="https://i.ibb.co/280qLYS/image-2023-08-10-160541677.png" alt="Image" width="1000" />
+  </div>
+  
+<p>Was that wrong? Does Chrome not always set the Lax attribute? If it doesn&rsquo;t, then this request shouldn&rsquo;t have the cookie.</p>
+<p>Now things get a bit tricky. Let&rsquo;s remember what I showed you earlier:</p>
+<p>&ldquo;If the user logged into bank.com just 2 minutes ago, the CSRF attack will work. But if it&rsquo;s been more than 2 minutes, the CSRF attack won&rsquo;t work.&rdquo;</p>
+<p>Basically, Chrome only sends the cookie within 2 minutes of authentication; after that, it stops sending it.</p>
+<div align="center">
+    <img src="https://i.pinimg.com/originals/19/98/2b/19982b821761e764b7f90d440ee1247a.jpg" alt="Image" width="350" />
+  </div>
+  
+<p>Please wait for 2 minutes before resending the request using csrf.html. Notice any changes? This time, the request doesn&rsquo;t include the cookie.</p>
+<div align="center">
+    <img src="https://i.ibb.co/NTCFgfb/image-2023-08-10-161748778.png" alt="Image" width="1000" />
+  </div>
+  
+<p>why there is such a behavior? When Chrome started to set SameSite attribute to Lax by default, it caused issues with certain aspects of the web.</p>
+<p>Certain applications like OAuth, OpenID, and payment gateways depend on cross-site requests for their functioning. Without this capability, the entire process breaks. To address this, Chrome developers introduced a temporary solution known as the &ldquo;2-minute rule.&rdquo; This rule allows these processes to operate smoothly. However, it&rsquo;s important to note that this solution is only temporary, and the upcoming change will make SameSite=Lax the default setting for all scenarios.</p>
+<p>So, if the victim uses a Safari browser and the “bank.com/transfer” endpoint doesn’t require any CSRF tokens, we can exploit it, right.</p>
+<p>Well, it&rsquo;s not that simple.</p>
+<h3 id="same-origin-policy">Same Origin Policy<a href="#same-origin-policy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>I won&rsquo;t get into all the technical details of the Same Origin Policy, as it can be quite complex. Instead, I&rsquo;ll talk about how it relates to CSRF and clear up a common misconception:</p>
+<p>Some folks think the Same Origin Policy only stops &ldquo;a.com&rdquo; from grabbing data from &ldquo;b.com,&rdquo; but lets requests from &ldquo;a.com&rdquo; go to &ldquo;b.com.&rdquo;</p>
+<p>Actually, that&rsquo;s not entirely correct. The SOP mostly stops data reading, but sometimes it also limits sending data.</p>
+<p>So what kind of requests are allowed?</p>
+<p>It allows sending GET/POST requests through HTML forms. Let’s try the following example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
+ &lt;<span style="color:#f92672">body</span>&gt;
+ &lt;<span style="color:#f92672">script</span>&gt;<span style="color:#a6e22e">history</span>.<span style="color:#a6e22e">pushState</span>(<span style="color:#960050;background-color:#1e0010">‘’</span>, <span style="color:#960050;background-color:#1e0010">‘’</span>, <span style="color:#960050;background-color:#1e0010">‘</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">’</span>)&lt;/<span style="color:#f92672">script</span>&gt;
+ 
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">”https://example.com/&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">”POST”</span>&gt;
+
+ &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”hidden”</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">”amount”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”500&#34;</span> /&gt;
+ &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">”submit”</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">”Submit</span> <span style="color:#a6e22e">request</span><span style="color:#960050;background-color:#1e0010">”</span> /&gt;
+ &lt;/<span style="color:#f92672">form</span>&gt;
+ &lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>Request’s content-type will be “application/x-www-form-urlencoded” which is allowed by SOP.
+Therefore, the request is sent.</p>
+<div align="center">
+    <img src="https://i.ibb.co/TDGnZbh/image-2023-08-10-171723577.png" alt="Image" width="1000" />
+  </div>
+  
+<p>This feature prevents PUT requests as well as requests with the &ldquo;application/json&rdquo; Content-Type header.</p>
+<p>You cannot initiate PUT or &ldquo;Content-Type: application/json&rdquo; requests using HTML forms. Instead, these require a distinct approach known as a &ldquo;special request.&rdquo; To accomplish this, you can employ the XMLHttpRequest (XHR) method in JavaScript. Let&rsquo;s explore an illustrative example below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">script</span>&gt;
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xmlhttp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">theUrl</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://mychaos.me/transfer&#34;</span>;
+        <span style="color:#a6e22e">xmlhttp</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#a6e22e">theUrl</span>);
+        <span style="color:#a6e22e">xmlhttp</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json;charset=UTF-8&#34;</span>);
+
+        <span style="color:#a6e22e">xmlhttp</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({ <span style="color:#e6db74">&#34;amount&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;500&#34;</span> }));
+    &lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>The above code will send a POST request to the &ldquo;<a href="https://mychaos.me/transfer%22">https://mychaos.me/transfer&quot;</a> endpoint with the &ldquo;amount&rdquo; parameter set to 500.
+The request failed due to “CORS error”. So, what happened behind the scene?</p>
+<p>Since this is an XHR request, the browser sends a “preflight” request to the target website with “OPTIONS” method. The browser makes this request to understand if the target website allows this request. How a website can allow this request?
+With Cross-Origin Resource Sharing (CORS) header of course.
+If the target website had “Access-Control-Allow-Origin: *” response header, the request would be successful.</p>
+<p>So, we can say that:</p>
+<ul>
+<li>If the “bank.com/transfer” endpoint only accepts “application/json” content-type, it doesn’t need any CSRF tokens. The attack won’t work.</li>
+<li>If the “bank.com/transfer” endpoint only accepts “PUT” requests, it doesn’t need any CSRF tokens. The attack won’t work.</li>
+</ul>
+<div align="center">
+    <img src="https://i.ibb.co/mt9vXd0/image-2023-08-10-173943705.png" alt="Image" width="1000" />
+  </div>
+  
+<p>But of course, we shouldn’t forget that there might be wrong implementations on the code base. What if “bank.com/transfer” accepts GET requests as well mistakenly? We can exploit it with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">”https://utkusen.com/?amount=500&#34;</span>&gt;
+</code></pre></div><p>img or script don&rsquo;t require preflight requests.</p>
+<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Cookies are vulnerable as they are automatically sent with each request, allowing attackers to easily craft malicious requests leading to CSRF.
+Although the attacker cannot obtain the response body or the Cookie itself, the attacker can perform actions with the victim’s elevated rights. The impact of a CSRF vulnerability is also related to the privilege of the victim, whose Cookie is being sent with the attacker’s request. While data retrieval is not the main scope of a CSRF attack, state changes will surely have an adverse effect on the web application being exploited.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mychaos.me/posts/blog/">
+                <span class="button__text">Blog</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2023 Powered by m0hs1ne</a></span>
+    
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
