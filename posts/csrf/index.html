@@ -175,8 +175,8 @@
 <h3 id="csrf-attack-example">CSRF Attack Example<a href="#csrf-attack-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Let&rsquo;s say that a user is logged into their bank account and wants to transfer money to another account. The user&rsquo;s bank uses a GET request to transfer funds, which is vulnerable to CSRF attacks. The attacker creates a malicious link like this:</p>
 <p><code>https://bank.com/transfer?to=attacker&amp;amount=1000</code></p>
-<p>when clicked, transfers money from the victim&rsquo;s account to the attacker&rsquo;s account. The attacker then sends the link to the victim via email or chat. If the victim clicks the link, the request is sent to the bank&rsquo;s website, which approves the request because the victim is already authenticated. The attacker receives the money, and the victim is none the wiser.
-If the attacker is sending the payload with a POST request, a payload similar to the following HTML code can be used:</p>
+<p>when clicked, transfers money from the victim&rsquo;s account to the attacker&rsquo;s account. The attacker then sends the link to the victim via email or chat. If the victim clicks the link, the request is sent to the bank&rsquo;s website, which approves the request because the victim is already authenticated. The attacker receives the money, and the victim is none the wiser.</p>
+<p>If the attacker is sending the payload with a POST request, a payload similar to the following HTML code can be used:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
 &lt;<span style="color:#f92672">body</span>&gt;
 &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://bank.co m/transfer&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
