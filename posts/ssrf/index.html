@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>SSRF :: chaos</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Server Side Request Forgery (SSRF) is a type of web attack where an attacker can make requests to any internal/external system." />
+<meta name="keywords" content="OWASP, SSRF, Web Security" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://mychaos.me/posts/ssrf/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://mychaos.me/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://mychaos.me/favicon.ico">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="SSRF">
+<meta property="og:description" content="Server Side Request Forgery (SSRF) is a type of web attack where an attacker can make requests to any internal/external system." />
+<meta property="og:url" content="https://mychaos.me/posts/ssrf/" />
+<meta property="og:site_name" content="chaos" />
+
+  
+  
+  <meta property="og:image" content="https://mychaos.me/">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-08-17 15:17:40 &#43;0100 &#43;01" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="blue">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    [m0hs1ne@r00t:~]#
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">/about</a></li>
+        
+      
+        
+          <li><a href="/posts">/posts</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >/about</a></li>
+        
+      
+        
+          <li><a href="/posts" >/posts</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://mychaos.me/posts/ssrf/">SSRF</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-08-17</time><span class="post-author">m0hs1ne</span><span class="post-reading-time">6 min read (1145 words)</span></div>
+
+  
+    <span class="post-tags">
+      
+      #<a href="https://mychaos.me/tags/owasp/">OWASP</a>&nbsp;
+      
+      #<a href="https://mychaos.me/tags/ssrf/">SSRF</a>&nbsp;
+      
+      #<a href="https://mychaos.me/tags/web-security/">Web Security</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+    <div class="table-of-contents">
+      <h2>
+        Table of Contents
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-server-side-request-forgery-ssrf">What is Server Side Request Forgery (SSRF)?</a></li>
+    <li><a href="#how-does-ssrf-work">How does SSRF work?</a></li>
+    <li><a href="#what-is-the-impact-of-ssrf">What is the impact of SSRF?</a></li>
+    <li><a href="#blind-ssrf">Blind SSRF</a></li>
+    <li><a href="#risk-of-ssrf">Risk of SSRF</a>
+      <ul>
+        <li><a href="#sensitive-data-exposure">Sensitive Data Exposure</a></li>
+        <li><a href="#denial-of-service-dos">Denial of Service (DoS)</a></li>
+        <li><a href="#cross-site-port-attacks-xspa">Cross-Site Port Attacks (XSPA)</a></li>
+        <li><a href="#fetch-metadata">Fetch Metadata</a></li>
+        <li><a href="#ssrf-to-rce">SSRF to RCE</a></li>
+      </ul>
+    </li>
+    <li><a href="#ssrf-via-referer-header">SSRF via Referer Header</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <blockquote>
+<p>SSRF is a type of web attack where an attacker can make requests to any internal/external system.</p>
+</blockquote>
+<h2 id="what-is-server-side-request-forgery-ssrf">What is Server Side Request Forgery (SSRF)?<a href="#what-is-server-side-request-forgery-ssrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Server-side Request Forgery (SSRF) is a vulnerability that allows the web server to make requests for the attacker to internal or external systems.</p>
+<p>Think of SSRF like using a proxy or a VPN. Imagine a user wanting to access a specific resource. Instead of directly requesting it, they go through a proxy or VPN server. This intermediary then sends the request to the resource on behalf of the user, gathers the results, and finally sends those results back to the user. SSRF operates in a somewhat similar fashion.</p>
+
+<img src="https://labs.detectify.com/wp-content/uploads/2022/09/image1.png"  alt="Hello Friend"  class="center"  style="border-radius: 8px;"    />
+
+
+<h2 id="how-does-ssrf-work">How does SSRF work?<a href="#how-does-ssrf-work" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Consider an application that displays the top deals for online shopping platforms such as Amazon.</p>
+<p>Now, picture this application as <a href="http://target.com">http://target.com</a>. In this scenario, the application has a specific endpoint called /amazon. This endpoint is responsible for fetching discounts across different categories from another application, let&rsquo;s call it <a href="http://target-amazon.com">http://target-amazon.com</a>. The catch here is that the application doesn&rsquo;t thoroughly check the URL it&rsquo;s receiving before proceeding with the fetch operation.</p>
+<p>So the HTTP request would look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#a6e22e">POST</span> /amazon <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/x-www-form-urlencoded</span>
+Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">56</span>
+<span style="color:#960050;background-color:#1e0010"> </span>
+source=http://target-amazon.com/getallcategories
+</code></pre></div><p>In this case, the application would fetch the data from <a href="http://target-amazon.com/getallcategories">http://target-amazon.com/getallcategories</a> and retrieve the detailed data.</p>
+<p>However, the URL (<a href="http://target-amazon.com/getallcategories">http://target-amazon.com/getallcategories</a>) can be replaced with any other URL. When the application receives the URL, the server will make a request to the URL and return the response to the user. This is where the SSRF vulnerability comes into play.</p>
+<h2 id="what-is-the-impact-of-ssrf">What is the impact of SSRF?<a href="#what-is-the-impact-of-ssrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>An effective SSRF attack can lead to unauthorized activities or the ability to reach data within the organization. This can occur within the compromised application or even extend to other backend systems it interacts with. In more concerning scenarios, the vulnerability in SSRF might permit an attacker to execute arbitrary commands, essentially gaining control over certain actions.</p>
+<p>If an SSRF exploit is used to establish connections with external third-party systems, it could potentially trigger malicious follow-up attacks. These attacks might cleverly seem to originate from the organization that&rsquo;s running the vulnerable application, adding another layer of complexity and danger to the situation.</p>
+<h2 id="blind-ssrf">Blind SSRF<a href="#blind-ssrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>There are two types of SSRF attacks: blind and basic.
+Basic SSRF attacks occur when the attacker can see the response from the server.</p>
+<p>Blind SSRF attacks occur when the host server does not return visible data to the attackers. They work by focusing on performing malicious actions rather than accessing sensitive data. An attacker may tamper with user permissions or sensitive files on the server. For instance, the attacker might change the URL for the API call to induce the server to retrieve a large file repeatedly. Eventually, the server could crash, causing a denial of service (DoS).</p>
+<h2 id="risk-of-ssrf">Risk of SSRF<a href="#risk-of-ssrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="sensitive-data-exposure">Sensitive Data Exposure<a href="#sensitive-data-exposure" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Sensitive data is the most popular target of SSRF attacks. Attackers typically submit malicious URLs to induce the server to return system information, allowing the attackers to escalate the attack. For example, an attacker might obtain credentials to access the server and create damage the higher the privilege level of the exposed credentials, the higher the risk. If an attacker obtains admin credentials, it could control the whole server.</p>
+<h3 id="denial-of-service-dos">Denial of Service (DoS)<a href="#denial-of-service-dos" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Denial of service attacks flood the target server with large volumes of requests, causing it to crash. DoS attacks are common, with many real-world examples. An SSRF-based DoS attack targets the internal servers of a network.</p>
+<p>Internal servers are typically vulnerable to DoS attacks because they don’t support large traffic volumes. Their low-bandwidth configuration makes sense because they normally receive far fewer requests than a public-facing server. Attackers can mount SSRF attacks to send large traffic volumes to the target system’s internal servers, taking up the available bandwidth and crashing the servers.</p>
+<h3 id="cross-site-port-attacks-xspa">Cross-Site Port Attacks (XSPA)<a href="#cross-site-port-attacks-xspa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In this attack an application processes user supplied URLs and does not verify or sanitize the back-end response received from remote servers before sending it back to the client. An attacker can send crafted queries to a vulnerable web application to proxy attacks to external Internet facing servers, intranet devices and the web server itself. The responses, in certain cases, can be studied to identify service availability like open ports , banner versions etc.</p>
+<p>It allows attackers to abuse available functionality in most web applications to scan port of intranet and external Internet facing servers, fingerprint internal (non-Internet exposed) network aware services, perform banner grabbing, identify web application frameworks, exploit vulnerable programs, run code on reachable machines, exploit web application vulnerabilities listening on internal networks, read local files using the file protocol and much more.</p>
+<h3 id="fetch-metadata">Fetch Metadata<a href="#fetch-metadata" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>An attacker can use SSRF to fetch metadata from the cloud instance. This metadata can be used to get the credentials of the cloud instance. The attacker can then use these credentials to access the cloud instance and perform malicious activities.</p>
+<h3 id="ssrf-to-rce">SSRF to RCE<a href="#ssrf-to-rce" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>An attacker can use SSRF to perform Remote Code Execution (RCE) on the server. This can be done by exploiting the SSRF vulnerability to make a request to a local service running on the server. The attacker can then use this service to execute arbitrary commands on the server.</p>
+<h2 id="ssrf-via-referer-header">SSRF via Referer Header<a href="#ssrf-via-referer-header" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Certain applications utilize server-side analytics software to monitor their visitors' activities. This software commonly records the Referrer header within incoming requests, as it holds special significance for tracing the origins of incoming links. Frequently, the analytics software goes a step further and actually visits any third-party URLs found in the Referrer header. This practice is generally aimed at dissecting the content of the sites that referred the traffic, encompassing elements like the anchor text utilized in those incoming links. Consequently, the Referrer header frequently emerges as a promising playground for potential SSRF vulnerabilities.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>SSRF is a serious vulnerability that can be exploited to perform a variety of attacks. It is important to understand how it works and how to prevent it. The best way to prevent SSRF is to validate all user input before using it in a request. This includes validating the URL, the HTTP method, and any other parameters that may be used in the request. It is also important to use a whitelist approach when validating user input. This means that you should only allow certain characters in the input and reject anything else. For example, if you are expecting a URL, you should only allow letters, numbers, and a few special characters such as ., -, and _. You should also make sure that the URL is valid by checking if it starts with http:// or https://. If it does not, then you should reject it. Finally, you should make sure that the URL is not a local IP address or a loopback address. If it is, then you should reject it.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mychaos.me/posts/csrf/">
+                <span class="button__text">CSRF</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2023 Powered by m0hs1ne</a></span>
+    
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

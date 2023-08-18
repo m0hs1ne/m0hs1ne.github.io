@@ -6,7 +6,64 @@
     <description>Recent content in OWASP on chaos</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Aug 2023 12:29:44 +0100</lastBuildDate><atom:link href="https://mychaos.me/tags/owasp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Aug 2023 15:17:40 +0100</lastBuildDate><atom:link href="https://mychaos.me/tags/owasp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSRF</title>
+      <link>https://mychaos.me/posts/ssrf/</link>
+      <pubDate>Thu, 17 Aug 2023 15:17:40 +0100</pubDate>
+      
+      <guid>https://mychaos.me/posts/ssrf/</guid>
+      <description>SSRF is a type of web attack where an attacker can make requests to any internal/external system.
+ What is Server Side Request Forgery (SSRF)? Server-side Request Forgery (SSRF) is a vulnerability that allows the web server to make requests for the attacker to internal or external systems.
+Think of SSRF like using a proxy or a VPN. Imagine a user wanting to access a specific resource. Instead of directly requesting it, they go through a proxy or VPN server.</description>
+      <content>&lt;blockquote&gt;
+&lt;p&gt;SSRF is a type of web attack where an attacker can make requests to any internal/external system.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;what-is-server-side-request-forgery-ssrf&#34;&gt;What is Server Side Request Forgery (SSRF)?&lt;/h2&gt;
+&lt;p&gt;Server-side Request Forgery (SSRF) is a vulnerability that allows the web server to make requests for the attacker to internal or external systems.&lt;/p&gt;
+&lt;p&gt;Think of SSRF like using a proxy or a VPN. Imagine a user wanting to access a specific resource. Instead of directly requesting it, they go through a proxy or VPN server. This intermediary then sends the request to the resource on behalf of the user, gathers the results, and finally sends those results back to the user. SSRF operates in a somewhat similar fashion.&lt;/p&gt;
+
+&lt;img src=&#34;https://labs.detectify.com/wp-content/uploads/2022/09/image1.png&#34;  alt=&#34;Hello Friend&#34;  class=&#34;center&#34;  style=&#34;border-radius: 8px;&#34;    /&gt;
+
+
+&lt;h2 id=&#34;how-does-ssrf-work&#34;&gt;How does SSRF work?&lt;/h2&gt;
+&lt;p&gt;Consider an application that displays the top deals for online shopping platforms such as Amazon.&lt;/p&gt;
+&lt;p&gt;Now, picture this application as &lt;a href=&#34;http://target.com&#34;&gt;http://target.com&lt;/a&gt;. In this scenario, the application has a specific endpoint called /amazon. This endpoint is responsible for fetching discounts across different categories from another application, let&amp;rsquo;s call it &lt;a href=&#34;http://target-amazon.com&#34;&gt;http://target-amazon.com&lt;/a&gt;. The catch here is that the application doesn&amp;rsquo;t thoroughly check the URL it&amp;rsquo;s receiving before proceeding with the fetch operation.&lt;/p&gt;
+&lt;p&gt;So the HTTP request would look something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;POST&lt;/span&gt; /amazon &lt;span style=&#34;color:#66d9ef&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1.1&lt;/span&gt;
+Content-Type&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;application/x-www-form-urlencoded&lt;/span&gt;
+Content-Length&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt;
+&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt; &lt;/span&gt;
+source=http://target-amazon.com/getallcategories
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this case, the application would fetch the data from &lt;a href=&#34;http://target-amazon.com/getallcategories&#34;&gt;http://target-amazon.com/getallcategories&lt;/a&gt; and retrieve the detailed data.&lt;/p&gt;
+&lt;p&gt;However, the URL (&lt;a href=&#34;http://target-amazon.com/getallcategories&#34;&gt;http://target-amazon.com/getallcategories&lt;/a&gt;) can be replaced with any other URL. When the application receives the URL, the server will make a request to the URL and return the response to the user. This is where the SSRF vulnerability comes into play.&lt;/p&gt;
+&lt;h2 id=&#34;what-is-the-impact-of-ssrf&#34;&gt;What is the impact of SSRF?&lt;/h2&gt;
+&lt;p&gt;An effective SSRF attack can lead to unauthorized activities or the ability to reach data within the organization. This can occur within the compromised application or even extend to other backend systems it interacts with. In more concerning scenarios, the vulnerability in SSRF might permit an attacker to execute arbitrary commands, essentially gaining control over certain actions.&lt;/p&gt;
+&lt;p&gt;If an SSRF exploit is used to establish connections with external third-party systems, it could potentially trigger malicious follow-up attacks. These attacks might cleverly seem to originate from the organization that&amp;rsquo;s running the vulnerable application, adding another layer of complexity and danger to the situation.&lt;/p&gt;
+&lt;h2 id=&#34;blind-ssrf&#34;&gt;Blind SSRF&lt;/h2&gt;
+&lt;p&gt;There are two types of SSRF attacks: blind and basic.
+Basic SSRF attacks occur when the attacker can see the response from the server.&lt;/p&gt;
+&lt;p&gt;Blind SSRF attacks occur when the host server does not return visible data to the attackers. They work by focusing on performing malicious actions rather than accessing sensitive data. An attacker may tamper with user permissions or sensitive files on the server. For instance, the attacker might change the URL for the API call to induce the server to retrieve a large file repeatedly. Eventually, the server could crash, causing a denial of service (DoS).&lt;/p&gt;
+&lt;h2 id=&#34;risk-of-ssrf&#34;&gt;Risk of SSRF&lt;/h2&gt;
+&lt;h3 id=&#34;sensitive-data-exposure&#34;&gt;Sensitive Data Exposure&lt;/h3&gt;
+&lt;p&gt;Sensitive data is the most popular target of SSRF attacks. Attackers typically submit malicious URLs to induce the server to return system information, allowing the attackers to escalate the attack. For example, an attacker might obtain credentials to access the server and create damage the higher the privilege level of the exposed credentials, the higher the risk. If an attacker obtains admin credentials, it could control the whole server.&lt;/p&gt;
+&lt;h3 id=&#34;denial-of-service-dos&#34;&gt;Denial of Service (DoS)&lt;/h3&gt;
+&lt;p&gt;Denial of service attacks flood the target server with large volumes of requests, causing it to crash. DoS attacks are common, with many real-world examples. An SSRF-based DoS attack targets the internal servers of a network.&lt;/p&gt;
+&lt;p&gt;Internal servers are typically vulnerable to DoS attacks because they don’t support large traffic volumes. Their low-bandwidth configuration makes sense because they normally receive far fewer requests than a public-facing server. Attackers can mount SSRF attacks to send large traffic volumes to the target system’s internal servers, taking up the available bandwidth and crashing the servers.&lt;/p&gt;
+&lt;h3 id=&#34;cross-site-port-attacks-xspa&#34;&gt;Cross-Site Port Attacks (XSPA)&lt;/h3&gt;
+&lt;p&gt;In this attack an application processes user supplied URLs and does not verify or sanitize the back-end response received from remote servers before sending it back to the client. An attacker can send crafted queries to a vulnerable web application to proxy attacks to external Internet facing servers, intranet devices and the web server itself. The responses, in certain cases, can be studied to identify service availability like open ports , banner versions etc.&lt;/p&gt;
+&lt;p&gt;It allows attackers to abuse available functionality in most web applications to scan port of intranet and external Internet facing servers, fingerprint internal (non-Internet exposed) network aware services, perform banner grabbing, identify web application frameworks, exploit vulnerable programs, run code on reachable machines, exploit web application vulnerabilities listening on internal networks, read local files using the file protocol and much more.&lt;/p&gt;
+&lt;h3 id=&#34;fetch-metadata&#34;&gt;Fetch Metadata&lt;/h3&gt;
+&lt;p&gt;An attacker can use SSRF to fetch metadata from the cloud instance. This metadata can be used to get the credentials of the cloud instance. The attacker can then use these credentials to access the cloud instance and perform malicious activities.&lt;/p&gt;
+&lt;h3 id=&#34;ssrf-to-rce&#34;&gt;SSRF to RCE&lt;/h3&gt;
+&lt;p&gt;An attacker can use SSRF to perform Remote Code Execution (RCE) on the server. This can be done by exploiting the SSRF vulnerability to make a request to a local service running on the server. The attacker can then use this service to execute arbitrary commands on the server.&lt;/p&gt;
+&lt;h2 id=&#34;ssrf-via-referer-header&#34;&gt;SSRF via Referer Header&lt;/h2&gt;
+&lt;p&gt;Certain applications utilize server-side analytics software to monitor their visitors&#39; activities. This software commonly records the Referrer header within incoming requests, as it holds special significance for tracing the origins of incoming links. Frequently, the analytics software goes a step further and actually visits any third-party URLs found in the Referrer header. This practice is generally aimed at dissecting the content of the sites that referred the traffic, encompassing elements like the anchor text utilized in those incoming links. Consequently, the Referrer header frequently emerges as a promising playground for potential SSRF vulnerabilities.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;SSRF is a serious vulnerability that can be exploited to perform a variety of attacks. It is important to understand how it works and how to prevent it. The best way to prevent SSRF is to validate all user input before using it in a request. This includes validating the URL, the HTTP method, and any other parameters that may be used in the request. It is also important to use a whitelist approach when validating user input. This means that you should only allow certain characters in the input and reject anything else. For example, if you are expecting a URL, you should only allow letters, numbers, and a few special characters such as ., -, and _. You should also make sure that the URL is valid by checking if it starts with http:// or https://. If it does not, then you should reject it. Finally, you should make sure that the URL is not a local IP address or a loopback address. If it is, then you should reject it.&lt;/p&gt;
+</content>
+    </item>
+    
     <item>
       <title>CSRF</title>
       <link>https://mychaos.me/posts/csrf/</link>
