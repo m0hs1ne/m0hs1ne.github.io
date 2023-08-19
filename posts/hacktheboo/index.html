@@ -133,7 +133,7 @@
   <h1 class="post-title">
     <a href="https://mychaos.me/posts/hacktheboo/">HackTheBoo</a>
   </h1>
-  <div class="post-meta"><time class="post-date">2022-10-28</time><span class="post-author">m0hs1ne</span><span class="post-reading-time">5 min read (1064 words)</span></div>
+  <div class="post-meta"><time class="post-date">2022-10-28</time><span class="post-author">m0hs1ne</span><span class="post-reading-time">6 min read (1068 words)</span></div>
 
   
     <span class="post-tags">
@@ -154,19 +154,19 @@
       </h2>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#solution">Solution</a></li>
+    <li><a href="#solution-1">Solution 1</a></li>
   </ul>
 
   <ul>
-    <li><a href="#solution-1">Solution</a></li>
+    <li><a href="#solution-2">Solution 2</a></li>
   </ul>
 
   <ul>
-    <li><a href="#solution-2">Solution</a></li>
+    <li><a href="#solution-3">Solution 3</a></li>
   </ul>
 
   <ul>
-    <li><a href="#solution-3">Solution</a></li>
+    <li><a href="#solution-4">Solution 4</a></li>
   </ul>
 </nav>
     </div>
@@ -177,7 +177,7 @@
 <blockquote>
 <p>You&rsquo;ve just received an invitation to a party. Authorities have reported that the party is cursed, and the guests are trapped in a never-ending unsolvable murder mystery party. Can you investigate further and try to save everyone?</p>
 </blockquote>
-<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution-1">Solution 1<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Looking through the provided source code, we see a <code>bot.js</code> file which reads the flag.txt file.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">puppeteer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;puppeteer&#39;</span>);
@@ -241,7 +241,7 @@ In the <code>JWTHelper.js</code> file we see how the JWT token is signed. It use
 <blockquote>
 <p>A powerful demon has sent one of his ghost generals into our world to ruin the fun of Halloween. The ghost can only be defeated by luck. Are you lucky enough to draw the right cards to defeat him and save this Halloween?</p>
 </blockquote>
-<h2 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution-2">Solution 2<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>We are given the source code for the website, after reading some of the code, I found an API that features an interesting method that supposedly calculates the health of the ghost (in the website) from the given parameters.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@api</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/get_health&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;POST&#39;</span>])
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">count</span>():
@@ -296,7 +296,7 @@ In the <code>JWTHelper.js</code> file we see how the JWT token is signed. It use
 <blockquote>
 <p>An organization seems to possess knowledge of the true nature of pumpkins. Can you find out what they honestly know and uncover this centuries-long secret once and for all?</p>
 </blockquote>
-<h2 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution-3">Solution 3<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When i press <code>Secret Facts</code> it shows : <code>Secrets can only be accessed by admin</code></p>
 <p><a href="https://postimg.cc/VdM7SY9r"><img src="https://i.postimg.cc/yYp2bxkP/Screen-Shot-2022-10-28-at-2-47-04-PM.png" alt="Screen-Shot-2022-10-28-at-2-47-04-PM.png"></a></p>
 <p>Since this challenge’s name is Juggling Facts, I’ll google php juggling.</p>
@@ -325,7 +325,7 @@ Since the case secrets is the first item, it can bypass the <code>REMOTE_ADDR</c
 <blockquote>
 <p>There&rsquo;s a new trend of an application that generates a spooky name for you. Users of that application later discovered that their real names were also magically changed, causing havoc in their life. Could you help bring down this application?</p>
 </blockquote>
-<h2 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution-4">Solution 4<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>First thing i did is try Server Side Template Injection, which allows RCE. Even if you are not sure from the source code whether it is vulnerable, you could try fuzzing in a few inputs. I tried <code>{{5*5}}</code>, <code>{5*5}</code> and <code>${5*5}</code> and found that <code>${5*5}</code> worked to display 25 on the webpage!</p>
 <p>Perfect, now all we need to do is to read the flag with the payload <code>${open(&quot;/flag.txt&quot;).read()}</code>.</p>
 <p>The Flag:</p>

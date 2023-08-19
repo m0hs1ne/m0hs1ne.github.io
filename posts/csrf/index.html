@@ -156,19 +156,15 @@
       </h2>
       <nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#what-is-cross-site-request-forgery-csrf">What is Cross-Site Request Forgery (CSRF)?</a></li>
-        <li><a href="#impact-of-csrf-attacks">Impact of CSRF attacks:</a></li>
-        <li><a href="#understanding-csrf-attacks">Understanding CSRF Attacks</a></li>
-        <li><a href="#csrf-attack-example">CSRF Attack Example</a></li>
-        <li><a href="#what-is-csrf-token">what is CSRF token?</a></li>
-        <li><a href="#is-csrf-simple-as-it-looks">is CSRF simple as it looks?</a></li>
-        <li><a href="#samesite-cookies">SameSite Cookies</a></li>
-        <li><a href="#same-origin-policy">Same Origin Policy</a></li>
-        <li><a href="#conclusion">Conclusion</a></li>
-      </ul>
-    </li>
+    <li><a href="#what-is-cross-site-request-forgery-csrf">What is Cross-Site Request Forgery (CSRF)?</a></li>
+    <li><a href="#impact-of-csrf-attacks">Impact of CSRF attacks:</a></li>
+    <li><a href="#understanding-csrf-attacks">Understanding CSRF Attacks</a></li>
+    <li><a href="#csrf-attack-example">CSRF Attack Example</a></li>
+    <li><a href="#what-is-csrf-token">what is CSRF token?</a></li>
+    <li><a href="#is-csrf-simple-as-it-looks">is CSRF simple as it looks?</a></li>
+    <li><a href="#samesite-cookies">SameSite Cookies</a></li>
+    <li><a href="#same-origin-policy">Same Origin Policy</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -178,15 +174,15 @@
         <blockquote>
 <p>CSRF is an attack that tricks the victim into submitting a malicious request.</p>
 </blockquote>
-<h3 id="what-is-cross-site-request-forgery-csrf">What is Cross-Site Request Forgery (CSRF)?<a href="#what-is-cross-site-request-forgery-csrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="what-is-cross-site-request-forgery-csrf">What is Cross-Site Request Forgery (CSRF)?<a href="#what-is-cross-site-request-forgery-csrf" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Cross-Site Request Forgery (CSRF) is an attack that tricks users of a web application into unknowingly performing unwanted actions while they are authenticated. This type of attack targets requests that change the application&rsquo;s state, rather than stealing data. Because the attacker cannot see the response to the forged request, they rely on social engineering techniques, such as sending malicious links via email or chat, to deceive users into executing actions of the attacker&rsquo;s choosing.</p>
 <div align="center">
     <img src="https://i.ibb.co/C9xLpKY/pinterestdownloader-com-1691670824-925069.jpg" alt="Image" width="600" />
   </div>
   
-<h3 id="impact-of-csrf-attacks">Impact of CSRF attacks:<a href="#impact-of-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="impact-of-csrf-attacks">Impact of CSRF attacks:<a href="#impact-of-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>If the victim is a regular user, a successful CSRF attack can lead to state-changing requests being performed without their consent. This can include actions like transferring funds, changing their email address, or giving an attacker access to their data. On the other hand, if the victim has an administrative account, a CSRF attack can compromise the entire web application.</p>
-<h3 id="understanding-csrf-attacks">Understanding CSRF Attacks<a href="#understanding-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="understanding-csrf-attacks">Understanding CSRF Attacks<a href="#understanding-csrf-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Cross-Site Request Forgery (CSRF) attacks allow attackers to bypass authentication processes or perform actions with elevated privileges. To execute this type of attack, the attacker must:</p>
 <ol>
 <li>Create a custom payload.</li>
@@ -195,7 +191,7 @@
 <li>Forge the request to conduct malicious actions.</li>
 </ol>
 <p>CSRF attacks only work if the victim is an authenticated user. This is because, when the request is made, the application checks if valid session cookies are available. If relevant cookies are available and sent with the request, and the website approves them, the CSRF attack will be successful.</p>
-<h3 id="csrf-attack-example">CSRF Attack Example<a href="#csrf-attack-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="csrf-attack-example">CSRF Attack Example<a href="#csrf-attack-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Let&rsquo;s say that a user is logged into their bank account and wants to transfer money to another account. The user&rsquo;s bank uses a GET request to transfer funds, which is vulnerable to CSRF attacks. The attacker creates a malicious link like this:</p>
 <p><code>https://bank.com/transfer?to=attacker&amp;amount=1000</code></p>
 <p>when clicked, transfers money from the victim&rsquo;s account to the attacker&rsquo;s account. The attacker then sends the link to the victim via email or chat. If the victim clicks the link, the request is sent to the bank&rsquo;s website, which approves the request because the victim is already authenticated. The attacker receives the money, and the victim is none the wiser.</p>
@@ -210,9 +206,9 @@
 &lt;/<span style="color:#f92672">body</span>&gt;
 &lt;/<span style="color:#f92672">html</span>&gt;
 </code></pre></div><p>When using the &ldquo;bank.com/transfer&rdquo; endpoint to perform a transfer action, the &ldquo;Transaction&rdquo; and &ldquo;Amount&rdquo; parameters are passed via a POST request. Since this endpoint doesn&rsquo;t require a random CSRF token, an attacker can put HTML code on &ldquo;attacker.com,&rdquo; send the link to the victim, and initiate a transfer once the victim opens the link. This attack is possible due to the lack of mandatory CSRF token.</p>
-<h3 id="what-is-csrf-token">what is CSRF token?<a href="#what-is-csrf-token" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="what-is-csrf-token">what is CSRF token?<a href="#what-is-csrf-token" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>A CSRF token is a unique, secret, unpredictable value that is generated by the server-side application and transmitted to the client in such a way that it is included in a subsequent HTTP request made by the client. When the later request is made, the server-side application validates that the request includes the expected token and rejects the request if the token is missing or invalid.</p>
-<h3 id="is-csrf-simple-as-it-looks">is CSRF simple as it looks?<a href="#is-csrf-simple-as-it-looks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="is-csrf-simple-as-it-looks">is CSRF simple as it looks?<a href="#is-csrf-simple-as-it-looks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When the victim opens the link, the transfer occurs. Right?</p>
 <p>Well, it&rsquo;s not that simple.</p>
 <p>There are various scenarios to consider. For instance, if the victim is using Chrome browser, it won&rsquo;t work. However, if they are using Safari, it would work. So, can we conclude that CSRF doesn&rsquo;t occur in Chrome anymore? No. It depends on whether the victim logged in to <code>bank.com</code> within the last two minutes. If they did, the transfer will work. If more than two minutes have passed, it won&rsquo;t.</p>
@@ -222,7 +218,7 @@
   </div>
   
 <p>I understand that it may be confusing. To understand these scenarios, we must first grasp two concepts: SameSite Cookies and Same Origin Policy. Let&rsquo;s break it down step by step.</p>
-<h3 id="samesite-cookies">SameSite Cookies<a href="#samesite-cookies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="samesite-cookies">SameSite Cookies<a href="#samesite-cookies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>SameSite is a cookie attribute, similar to HttpOnly and Secure. Its purpose is to address the main vulnerability exploited by CSRF attacks. By default, when you send a request from a.com to b.com, the browser includes your cookies for b.com in the request. As a result, when the attacker&rsquo;s code on evil.com sends a money transfer request to bank.com, the browser sends an authenticated request to bank.com, leading to the successful transfer.</p>
 <p>If the browser fails to add the cookie to the request, it poses a problem. Let&rsquo;s consider a scenario where a victim logs in to bank.com, then visits evil.com. Inside evil.com, a transfer request is sent to bank.com. However, because the browser doesn&rsquo;t include cookies, the request lacks the necessary authentication, resulting in the transfer not taking place.</p>
 <p>To address this issue, a concept called &ldquo;SameSite&rdquo; has been introduced. The SameSite cookie attribute offers three possible values:</p>
@@ -273,7 +269,7 @@ It generates a POST request and the request doesn’t contain a random CSRF-toke
 <p>Certain applications like OAuth, OpenID, and payment gateways depend on cross-site requests for their functioning. Without this capability, the entire process breaks. To address this, Chrome developers introduced a temporary solution known as the &ldquo;2-minute rule.&rdquo; This rule allows these processes to operate smoothly. However, it&rsquo;s important to note that this solution is only temporary, and the upcoming change will make SameSite=Lax the default setting for all scenarios.</p>
 <p>So, if the victim uses a Safari browser and the “bank.com/transfer” endpoint doesn’t require any CSRF tokens, we can exploit it, right.</p>
 <p>Well, it&rsquo;s not that simple.</p>
-<h3 id="same-origin-policy">Same Origin Policy<a href="#same-origin-policy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="same-origin-policy">Same Origin Policy<a href="#same-origin-policy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>I won&rsquo;t get into all the technical details of the Same Origin Policy, as it can be quite complex. Instead, I&rsquo;ll talk about how it relates to CSRF and clear up a common misconception:</p>
 <p>Some folks think the Same Origin Policy only stops &ldquo;a.com&rdquo; from grabbing data from &ldquo;b.com,&rdquo; but lets requests from &ldquo;a.com&rdquo; go to &ldquo;b.com.&rdquo;</p>
 <p>Actually, that&rsquo;s not entirely correct. The SOP mostly stops data reading, but sometimes it also limits sending data.</p>
@@ -328,7 +324,7 @@ If the target website had “Access-Control-Allow-Origin: *” response header, 
 <p>But of course, we shouldn’t forget that there might be wrong implementations on the code base. What if “bank.com/transfer” accepts GET requests as well mistakenly? We can exploit it with:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">”https://mychaos.me/?amount=500&#34;</span>&gt;
 </code></pre></div><p>img or script don&rsquo;t require preflight requests.</p>
-<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Cookies are vulnerable as they are automatically sent with each request, allowing attackers to easily craft malicious requests leading to CSRF.
 Although the attacker cannot obtain the response body or the Cookie itself, the attacker can perform actions with the victim’s elevated rights. The impact of a CSRF vulnerability is also related to the privilege of the victim, whose Cookie is being sent with the attacker’s request. While data retrieval is not the main scope of a CSRF attack, state changes will surely have an adverse effect on the web application being exploited.</p>
 
